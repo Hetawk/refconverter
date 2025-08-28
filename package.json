@@ -1,0 +1,218 @@
+{
+  "name": "refconv-electron",
+  "version": "1.0.0",
+  "description": "A robust XML to BibTeX reference converter built with Electron",
+  "main": "main.js",
+  "homepage": "https://www.ekddigital.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hetawk/refconverter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hetawk/refconverter/issues"
+  },
+  "scripts": {
+    "start": "npm run build:css && npm run build:ts && electron .",
+    "dev": "npm run build:css && npm run build:ts && NODE_ENV=development electron .",
+    "build:css": "npx tailwindcss -i ./src/styles/app.css -o ./dist/styles/app.css --watch=false",
+    "build:css:watch": "npx tailwindcss -i ./src/styles/app.css -o ./dist/styles/app.css --watch",
+    "build:ts": "tsc",
+    "build:ts:watch": "tsc --watch",
+    "build:all": "npm run build:css && npm run build:ts",
+    "watch": "concurrently \"npm run build:css:watch\" \"npm run build:ts:watch\"",
+    "build": "npm run build:all && electron-builder",
+    "build:mac": "npm run build:all && electron-builder --mac",
+    "build:win": "npm run build:all && electron-builder --win",
+    "build:linux": "npm run build:all && electron-builder --linux",
+    "build:all-platforms": "npm run build:all && electron-builder --mac --win --linux",
+    "pack": "npm run build:all && electron-builder --dir",
+    "dist": "npm run build:all && electron-builder --publish=never",
+    "release": "npm run build:all && electron-builder --publish=always",
+    "draft-release": "npm run build:all && electron-builder --publish=onTagOrDraft",
+    "clean": "rm -rf dist-electron dist",
+    "clean:dist": "rm -rf dist",
+    "clean:electron": "rm -rf dist-electron",
+    "prebuild": "npm run clean:dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "reference",
+    "converter",
+    "bibtex",
+    "xml",
+    "endnote",
+    "electron",
+    "academic",
+    "research"
+  ],
+  "author": {
+    "name": "EKD Digital",
+    "email": "ekd@ekddigital.com",
+    "url": "https://www.ekddigital.com/"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "@types/node": "^24.3.0",
+    "autoprefixer": "^10.4.21",
+    "concurrently": "^9.2.1",
+    "electron": "^37.4.0",
+    "electron-builder": "^24.13.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "electron-log": "^5.1.0",
+    "electron-updater": "^6.2.1",
+    "fs-extra": "^11.3.1",
+    "fuzzball": "^2.2.3",
+    "jsdom": "^26.1.0"
+  },
+  "build": {
+    "appId": "com.ekddigital.refconv",
+    "productName": "RefConvert Pro - EKD Digital",
+    "copyright": "Copyright © 2025 EKD Digital",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "Hetawk",
+        "repo": "refconverter"
+      }
+    ],
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "dist/**/*",
+      "assets/**/*",
+      "!src/**/*",
+      "!reference_dir/**/*",
+      "!*.md",
+      "!LICENSE",
+      "!CHANGELOG.md",
+      "!tsconfig.json",
+      "!tailwind.config.js",
+      "!.github/**/*",
+      "!scripts/**/*",
+      "!build/**/*",
+      "!*.log"
+    ],
+    "extraResources": [
+      {
+        "from": "reference_dir",
+        "to": "reference_dir",
+        "filter": [
+          "**/*",
+          "!*.log"
+        ]
+      }
+    ],
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "sign": false,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Office",
+      "maintainer": "EKD Digital <ekd@ekddigital.com>",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "rpm",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "tar.gz",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.png",
+      "uninstallerIcon": "build/icon.png",
+      "installerHeaderIcon": "build/icon.png",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

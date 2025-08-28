@@ -1,0 +1,374 @@
+@import "tailwindcss";
+
+/* Custom base styles */
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  background-color: #f9fafb;
+  color: #111827;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Ensure proper viewport height */
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background-color: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 9999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #4b5563;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #6b7280;
+}
+
+/* File upload area enhancement */
+.file-upload-area {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.file-upload-area:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .file-upload-area:hover {
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+}
+
+.file-upload-area.dragover {
+  border-color: #3b82f6 !important;
+  background-color: #eff6ff;
+  transform: scale(1.02);
+}
+
+.dark .file-upload-area.dragover {
+  background-color: #1e3a8a;
+}
+
+/* Scrollable containers */
+.scrollable-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+  scrollbar-width: thin;
+}
+
+/* Sidebar scrolling */
+#sidebar .flex-1 {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+  /* Force proper height calculation for sidebar middle section */
+  max-height: calc(100vh - 180px); /* Account for header and footer height */
+  min-height: 0;
+}
+
+.dark #sidebar .flex-1 {
+  scrollbar-color: #4b5563 #1f2937;
+}
+
+/* Ensure sidebar is always properly sized */
+#sidebar {
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+/* Main content area proper height */
+main {
+  height: 100vh;
+  max-height: 100vh;
+}
+
+/* Tab content containers need proper height constraints */
+.tab-content {
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+/* Log content scrolling fix */
+#conversionLogContent {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+  max-height: calc(100vh - 220px); /* Account for header, tab nav, and log header */
+}
+
+.dark #conversionLogContent {
+  scrollbar-color: #4b5563 #1f2937;
+}
+
+/* Results container specific styles */
+#conversion-results {
+  max-height: none;
+  height: auto;
+}
+
+/* Results action buttons - ensure they stick to bottom without gap */
+#results-actions {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  /* Ensure no margin or padding creates gaps */
+  margin-top: auto;
+}
+
+.dark #results-actions {
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure results content area takes full space except for action buttons */
+#results-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+}
+
+#results-content > .flex-1 {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Remove any default margins that might create gaps */
+#results-content #results-actions {
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Force scrollbars to be visible when needed */
+.force-scroll {
+  overflow-y: scroll !important;
+}
+
+/* Improve pre tag scrolling */
+pre {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db #f3f4f6;
+}
+
+.dark pre {
+  scrollbar-color: #4b5563 #1f2937;
+}
+
+/* Tab content styling */
+.tab-content {
+  height: 100%;
+  display: none;
+  flex-direction: column;
+}
+
+.tab-content.hidden {
+  display: none !important;
+}
+
+.tab-content.active {
+  display: flex !important;
+}
+
+/* Toggle Switch Component */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d1d5db;
+  transition: all 0.3s ease-in-out;
+  border-radius: 9999px;
+}
+
+.dark .toggle-switch .slider {
+  background-color: #4b5563;
+}
+
+.toggle-switch .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dark .toggle-switch .slider:before {
+  background-color: #f3f4f6;
+}
+
+.toggle-switch input:checked + .slider {
+  background-color: #3b82f6;
+}
+
+.toggle-switch input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Loading Animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  border-radius: 9999px;
+  border: 2px solid #d1d5db;
+  border-top: 2px solid #3b82f6;
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* File Upload Area */
+.file-upload-area {
+  position: relative;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.dark .file-upload-area {
+  border-color: #4b5563;
+}
+
+.file-upload-area:hover {
+  border-color: #60a5fa;
+}
+
+.dark .file-upload-area:hover {
+  border-color: #3b82f6;
+}
+
+.file-upload-area.dragover {
+  border-color: #3b82f6;
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.dark .file-upload-area.dragover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.3s;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobile-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  width: 320px;
+  background-color: white;
+  border-left: 1px solid #e5e7eb;
+  box-shadow: -10px 0 25px -3px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.dark .mobile-menu {
+  background-color: #1f2937;
+  border-left-color: #374151;
+}
+
+.mobile-menu.open {
+  transform: translateX(0);
+}
+
+/* Animation utilities */
+.fade-in {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    color: black !important;
+    background-color: white !important;
+  }
+}

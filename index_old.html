@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data: https:;
+        font-src 'self';
+        connect-src 'self' https:;
+    ">
+    <title>EKD Digital Reference Converter</title>
+    <link rel="stylesheet" href="./dist/styles/app.css">
+    <style>
+        /* Prevent flash of unstyled content */
+        .loading-screen {
+            position: fixed;
+            inset: 0;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+
+        .dark .loading-screen {
+            background: #111827;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="h-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="text-center">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Loading EKD Digital Reference Converter...</p>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="mobile-overlay" aria-hidden="true"></div>
+
+    <!-- Main Container -->
+    <div class="flex h-full">
+        <!-- Sidebar Container -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content Container -->
+        <div id="main-content-container"></div>
+    </div>
+
+    <!-- Mobile Menu Container -->
+    <div id="mobile-menu-container"></div>
+
+    <!-- Scripts -->
+    <script src="./dist/app.js"></script>
+    <script>
+        // Hide loading screen when page is fully loaded
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+            }
+        });
+
+        // File drag and drop enhancement
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileUploadArea = document.querySelector('.file-upload-area');
+            const fileInput = document.getElementById('xmlFile');
+
+            if (fileUploadArea && fileInput) {
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    fileUploadArea.addEventListener(eventName, preventDefaults, false);
+                    document.body.addEventListener(eventName, preventDefaults, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    fileUploadArea.addEventListener(eventName, highlight, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    fileUploadArea.addEventListener(eventName, unhighlight, false);
+                });
+
+                fileUploadArea.addEventListener('drop', handleDrop, false);
+
+                function preventDefaults(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+
+                function highlight(e) {
+                    fileUploadArea.classList.add('dragover');
+                }
+
+                function unhighlight(e) {
+                    fileUploadArea.classList.remove('dragover');
+                }
+
+                function handleDrop(e) {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files.length > 0) {
+                        fileInput.files = files;
+                        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
+            }
+
+            // Mobile menu event handlers
+            document.addEventListener('click', (e) => {
+                if (e.target.id === 'mobile-menu-close') {
+                    document.getElementById('mobile-menu')?.classList.remove('open');
+                    document.getElementById('mobile-overlay')?.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Sync mobile theme toggle
+            document.addEventListener('click', (e) => {
+                if (e.target.id === 'mobile-theme-toggle') {
+                    document.getElementById('theme-toggle')?.click();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
