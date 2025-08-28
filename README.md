@@ -44,8 +44,9 @@ A robust, feature-rich XML to BibTeX reference converter built with Electron. Th
 ### Development Setup
 
 ```bash
-# Clone or extract the project
-cd refconv-electron
+# Clone the repository
+git clone https://github.com/Hetawk/refconverter.git
+cd refconverter
 
 # Install dependencies
 npm install
@@ -71,30 +72,24 @@ npm start
 
 #### Production Builds
 
-**Build for Current Platform:**
+**Complete Multi-Platform Build (Recommended):**
 
 ```bash
-npm run build
+# Build for ALL platforms (macOS, Windows, Linux)
+npm run build:production
 ```
 
 **Build for Specific Platforms:**
 
 ```bash
-# macOS (DMG installer for Intel and Apple Silicon)
+# macOS (Intel + Apple Silicon)
 npm run build:mac
 
-# Windows (NSIS installer for x64 and x86)
+# Windows (x64 + ia32)
 npm run build:win
 
-# Linux (AppImage and DEB packages for x64)
+# Linux (AppImage + DEB + tar.gz)
 npm run build:linux
-```
-
-**Build for All Platforms:**
-
-```bash
-# Build for macOS, Windows, and Linux
-npm run build:all-platforms
 ```
 
 **Clean Build Directory:**
@@ -106,11 +101,15 @@ npm run clean
 
 #### Build Output
 
-Built applications will be available in the `dist-electron/` directory:
+Built applications will be available in the `dist/` directory:
 
-- **macOS**: `RefConvert Pro - EKD Digital.dmg`
-- **Windows**: `RefConvert Pro - EKD Digital Setup.exe`
-- **Linux**: `RefConvert Pro - EKD Digital.AppImage` and `.deb` packages
+- **macOS Intel**: `RefConvert Pro - EKD Digital-1.0.0-mac.zip`
+- **macOS Apple Silicon**: `RefConvert Pro - EKD Digital-1.0.0-arm64-mac.zip`
+- **Windows Installer**: `RefConvert Pro - EKD Digital Setup 1.0.0.exe`
+- **Windows Portable**: `RefConvert Pro - EKD Digital 1.0.0.exe`
+- **Linux AppImage**: `RefConvert Pro - EKD Digital-1.0.0.AppImage`
+- **Linux DEB**: `refconv-electron_1.0.0_amd64.deb`
+- **Linux Archive**: `refconv-electron-1.0.0.tar.gz`
 
 #### Development vs Production
 
@@ -190,30 +189,40 @@ The application can enhance references using external APIs:
 ### Project Structure
 
 ```
-refconv-electron/
+refconverter/
 ├── main.js                 # Electron main process
 ├── preload.js             # Preload script for security
 ├── index.html             # Main application window
-├── src/
-│   ├── app.js            # Main application logic
+├── src/                   # TypeScript source files
+│   ├── app.ts            # Main application logic
 │   ├── converter/
-│   │   ├── xmlConverter.js        # Core XML to BibTeX converter
+│   │   ├── ConversionEngine.ts    # Core XML to BibTeX converter
 │   │   └── externalApiManager.js  # API integration
-│   ├── utils/
-│   │   ├── logger.js             # Logging system
-│   │   ├── progressManager.js    # Progress tracking
-│   │   └── settingsManager.js    # Settings management
-│   └── styles/
-│       ├── main.css             # Core styles
-│       ├── components.css       # UI components
-│       └── themes.css           # Theme definitions
+│   ├── handlers/
+│   │   └── ResponseHandler.ts     # Response handling
+│   ├── ui/
+│   │   ├── components/            # UI components
+│   │   ├── ToastManager.ts       # Toast notifications
+│   │   └── UIController.ts       # UI controller
+│   └── utils/
+│       ├── EventManager.ts       # Event management
+│       ├── FileManager.ts        # File operations
+│       ├── Logger.ts             # Logging system
+│       ├── ProgressManager.ts    # Progress tracking
+│       └── SettingsManager.ts    # Settings management
+├── dist/                  # Compiled output
+│   ├── styles/            # Compiled CSS
+│   └── ...                # Compiled TypeScript
 ├── assets/               # Icons and images
-└── reference_dir/        # Python reference implementation
+│   └── logo.png          # Application icon
+├── package.json          # Project configuration
+├── tsconfig.json         # TypeScript configuration
+└── tailwind.config.js    # Tailwind CSS configuration
 ```
 
 ### Key Components
 
-#### XMLConverter
+#### ConversionEngine
 
 Core conversion engine that handles:
 
@@ -356,7 +365,7 @@ Users can manually check for updates through the application menu:
 2. **Create Git Tag**: Push the version tag to trigger the build
 
    ```bash
-   git push origin main
+   git push origin master
    git push origin --tags
    ```
 
@@ -394,8 +403,8 @@ npm run build:linux && npx electron-builder --publish=always
      "publish": [
        {
          "provider": "github",
-         "owner": "your-github-username",
-         "repo": "refconv-electron"
+         "owner": "Hetawk",
+         "repo": "refconverter"
        }
      ]
    }
@@ -427,9 +436,9 @@ Users can download the latest version from:
 
 #### Platform-Specific Notes
 
-- **macOS**: `.dmg` installer with code signing (requires Apple Developer certificate)
-- **Windows**: `.exe` installer with NSIS, includes uninstaller
-- **Linux**: `.AppImage` (portable) and `.deb` (Debian/Ubuntu) packages
+- **macOS**: `.zip` archives for both Intel and Apple Silicon Macs
+- **Windows**: `.exe` installer with NSIS, includes uninstaller and portable version
+- **Linux**: `.AppImage` (portable), `.deb` (Debian/Ubuntu), and `.tar.gz` (manual installation)
 
 ## Roadmap
 

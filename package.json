@@ -24,7 +24,7 @@
     "build:mac": "npm run build:all && electron-builder --mac",
     "build:win": "npm run build:all && electron-builder --win",
     "build:linux": "npm run build:all && electron-builder --linux",
-    "build:all-platforms": "npm run build:all && electron-builder --mac --win --linux",
+    "build:production": "npm run clean && npm run build:all && electron-builder --mac --win --linux --publish=never",
     "pack": "npm run build:all && electron-builder --dir",
     "dist": "npm run build:all && electron-builder --publish=never",
     "release": "npm run build:all && electron-builder --publish=always",
@@ -90,10 +90,9 @@
       "main.js",
       "preload.js",
       "index.html",
-      "dist/**/*",
+      "dist/styles/**/*",
       "assets/**/*",
       "!src/**/*",
-      "!reference_dir/**/*",
       "!*.md",
       "!LICENSE",
       "!CHANGELOG.md",
@@ -101,32 +100,14 @@
       "!tailwind.config.js",
       "!.github/**/*",
       "!scripts/**/*",
-      "!build/**/*",
       "!*.log"
     ],
-    "extraResources": [
-      {
-        "from": "reference_dir",
-        "to": "reference_dir",
-        "filter": [
-          "**/*",
-          "!*.log"
-        ]
-      }
-    ],
     "mac": {
-      "icon": "build/icon.png",
+      "icon": "assets/logo.png",
       "category": "public.app-category.productivity",
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "target": [
-        {
-          "target": "dmg",
-          "arch": [
-            "x64",
-            "arm64"
-          ]
-        },
         {
           "target": "zip",
           "arch": [
@@ -136,23 +117,8 @@
         }
       ]
     },
-    "dmg": {
-      "sign": false,
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
     "win": {
-      "icon": "build/icon.png",
+      "icon": "assets/logo.png",
       "target": [
         {
           "target": "nsis",
@@ -175,7 +141,7 @@
       ]
     },
     "linux": {
-      "icon": "build/icon.png",
+      "icon": "assets/logo.png",
       "category": "Office",
       "maintainer": "EKD Digital <ekd@ekddigital.com>",
       "target": [
@@ -192,12 +158,6 @@
           ]
         },
         {
-          "target": "rpm",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
           "target": "tar.gz",
           "arch": [
             "x64"
@@ -208,9 +168,6 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "build/icon.png",
-      "uninstallerIcon": "build/icon.png",
-      "installerHeaderIcon": "build/icon.png",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true
     }
