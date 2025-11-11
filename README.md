@@ -424,6 +424,8 @@ The `.github/workflows/build-and-release.yml` file handles:
 - **GitHub release creation** with all platform binaries
 - **Artifact upload** for manual downloads
 
+**📘 For detailed instructions on using GitHub Actions, testing workflows, and troubleshooting, see [GITHUB_ACTIONS_GUIDE.md](GITHUB_ACTIONS_GUIDE.md).**
+
 ### Distribution
 
 #### Download Options
