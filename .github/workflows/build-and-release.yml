@@ -56,6 +56,15 @@ jobs:
           path: dist/
           retention-days: 7
 
+      - name: List built files
+        shell: bash
+        run: |
+          echo "=== Built Distributable Files ==="
+          ls -lh dist/*.{zip,dmg,exe,msi,AppImage,deb,tar.gz,rpm} 2>/dev/null || echo "No distributable files found with standard extensions"
+          echo ""
+          echo "=== All files in dist/ ==="
+          ls -lh dist/
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -72,9 +81,17 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist-macos-latest/**/*
-            dist-windows-latest/**/*
-            dist-ubuntu-latest/**/*
+            dist-macos-latest/*.zip
+            dist-macos-latest/*.dmg
+            dist-macos-latest/latest*.yml
+            dist-windows-latest/*.exe
+            dist-windows-latest/*.msi
+            dist-windows-latest/latest*.yml
+            dist-ubuntu-latest/*.AppImage
+            dist-ubuntu-latest/*.deb
+            dist-ubuntu-latest/*.tar.gz
+            dist-ubuntu-latest/*.rpm
+            dist-ubuntu-latest/latest*.yml
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
