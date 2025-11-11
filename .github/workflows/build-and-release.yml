@@ -56,6 +56,15 @@ jobs:
           path: dist/
           retention-days: 7
 
+      - name: List built files
+        shell: bash
+        run: |
+          echo "=== Built Distributable Files ==="
+          ls -lh dist/*.{zip,dmg,exe,msi,AppImage,deb,tar.gz,rpm} 2>/dev/null || echo "No distributable files found with standard extensions"
+          echo ""
+          echo "=== All files in dist/ ==="
+          ls -lh dist/
+
   release:
     needs: build
     runs-on: ubuntu-latest
